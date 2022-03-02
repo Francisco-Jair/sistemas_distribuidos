@@ -1,0 +1,1 @@
+Utilize sua criatividade e desenvolva uma aplicação utlizando Ajax. O código deve ser simples para possível executar apenas no browser, sem a necessidade de um servidor para hospedar. Serão sorteados alguns trabalhos para apresentação em sala de aula. Portanto, capriche!
