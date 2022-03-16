@@ -34,7 +34,6 @@ def multicast_ping():
 
 
 def multicast_ping_respond(server_id):
-    """"""
     endereco_local = ("", 1902)
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     sock.bind(endereco_local)
