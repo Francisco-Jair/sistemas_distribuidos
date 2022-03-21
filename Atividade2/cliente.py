@@ -18,6 +18,6 @@ try:
         except socket.timeout:
             break
         else:
-            print(f"{mensagem_recebida}")
+            print(mensagem_recebida)
 finally:
     sock.close()
