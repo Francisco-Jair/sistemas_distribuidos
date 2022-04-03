@@ -1,22 +1,9 @@
-#import os.path
+import os.path
 import sqlite3
 from serializer import usuario
-from .mainModels import db_path
 
-#BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-#db_path = os.path.join(BASE_DIR, "dados.db")
-
-def criarBanco():
-    #print(BASE_DIR)
-    con = sqlite3.connect(db_path)
-    con.close()
-
-
-def criarTabelasUsuario():
-    con = sqlite3.connect(db_path)    
-    cur = con.cursor()
-    cur.execute('''CREATE TABLE usuarios (id integer primary key autoincrement not null , nome text, sobrenome text, email text, senha text)''')
-    con.close()
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+db_path = os.path.join(BASE_DIR, "dados.db")
 
 
 def inserirUsuario(nome, sobrenome, email, senha):
@@ -75,8 +62,5 @@ def recuperarUsuarioEmailBD(email):
     return users
 
 
-
 if __name__ == '__main__':
     pass
-    #criarBanco()
-    #criarTabelas()
