@@ -22,7 +22,7 @@ def criarTabelasEmail():
     con = sqlite3.connect(db_path)    
     cur = con.cursor()
     cur.execute('''    
-    CREATE TABLE IF NOT EXISTS emails (id_email integer primary key autoincrement not null , destinatario text, assunto text, lido integer,usuario integer not null)
+    CREATE TABLE IF NOT EXISTS emails (id_email integer primary key autoincrement not null , destinatario text, assunto text, corpo text, lido integer,usuario integer not null)
     ''')
     con.close()
     

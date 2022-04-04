@@ -1,7 +1,7 @@
 import http.server
 import json
 from .list_routers import lista_rotas as rotas
-from controllers import get, usuarios
+from controllers import emailController, get, usuariosController
 #from urllib.parse import urlparse
 #import socketserver
 #PORT = 8000
@@ -29,11 +29,14 @@ class MyHandler(http.server.SimpleHTTPRequestHandler):
             output_data = {'status': 'OK', 'result': get.testeGET()['version']}
         elif self.path == rotas[3]:
             # /usuario
-            data = usuarios.recuperarTodosUsuario()
+            data = usuariosController.recuperarTodosUsuario()
             output_data = {'status': 'OK', 'result': data}
         elif self.path == rotas[4].format(id):
-            data = usuarios.recuperarUsuarioID(id)
+            # /usuario/id
+            data = usuariosController.recuperarUsuarioID(id)
             output_data = {'status': 'OK', 'result': data}
+        else:
+            output_data = {'status': 'OK', 'result': "Faça login para pode acessar a rota"}
 
 
         self.send_response(200)
@@ -58,7 +61,7 @@ class MyHandler(http.server.SimpleHTTPRequestHandler):
 
         if self.path == rotas[2]:
             #/criar_usuario
-            code = usuarios.criar_usuario(input_data["nome"], input_data["sobrenome"], input_data["email"], input_data["senha"])
+            code = usuariosController.criar_usuario(input_data["nome"], input_data["sobrenome"], input_data["email"], input_data["senha"])
             msg = ""
             if code == 1:
                 msg = "Usuário cadastrado com sucesso"
@@ -66,17 +69,26 @@ class MyHandler(http.server.SimpleHTTPRequestHandler):
                 msg = "Usuário com e-mail Já cadastrado"
 
             output_data = {'status': 'OK', 'result': msg}
+        elif self.path == rotas[5]:
+            # /enviar_email
+            code = emailController.enviarEmail(input_data)
+            output_data = {'status': 'OK', 'result': "KO"}
+        elif self.path == rotas[6]:
+            # /login
+            #self.login, self.email = get.login(input_data["login"])
+            output_data = {'status': 'OK', 'result': "Login realizado com sucesso"}
+            #print(self.login, self.email)
+        else:
+            output_data = {'status': 'OK', 'result': "Faça login para pode acessar a rota"}
         
-
+        
         # - response -
-        
         self.send_response(200)
         self.send_header('Content-type', 'text/json')
         self.end_headers()
         
         
         output_json = json.dumps(output_data)
-        
         self.wfile.write(output_json.encode('utf-8'))
     
 
@@ -90,7 +102,7 @@ class MyHandler(http.server.SimpleHTTPRequestHandler):
         else:
             input_data = None
             
-        print(input_data)
+        #print(input_data)
         
         # - response -
         
@@ -114,7 +126,7 @@ class MyHandler(http.server.SimpleHTTPRequestHandler):
         else:
             input_data = None
             
-        print(input_data)
+        #print(input_data)
         
         # - response -
         
@@ -129,6 +141,7 @@ class MyHandler(http.server.SimpleHTTPRequestHandler):
 
 
 Handler = MyHandler
+
 
 """
 try:
