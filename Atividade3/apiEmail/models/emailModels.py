@@ -33,7 +33,7 @@ def lerEmail(id):
     cur = con.cursor()
 
     # Atualizar
-    cur.execute(f"""UPDATE FROM emails SET lido = 1 WHERE id_email = {id};""")
+    cur.execute(f"""UPDATE emails SET lido = 1 WHERE id_email = {id};""")
     con.commit()
 
     cur.execute(f"""SELECT * FROM emails WHERE id_email = {id};""")
@@ -43,7 +43,7 @@ def lerEmail(id):
 def excluirEmail(id):
     con = sqlite3.connect(db_path)
     cur = con.cursor()
-    cur.execute(f"""DELETE * FROM emails WHERE id_email = {id};""")
+    cur.execute(f"""DELETE FROM emails WHERE id_email = {id};""")
     con.commit()
     cur.close()
     return True

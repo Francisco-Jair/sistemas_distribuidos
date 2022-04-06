@@ -6,5 +6,7 @@ lista_rotas = [
     "/usuario/{}", #4
     "/enviar_email", #5
     "/login", #6
-    
+    "/email/{}", #7
+    "/email/caixa_entrada", #8
+    "/email/delete/{}", #9
 ]

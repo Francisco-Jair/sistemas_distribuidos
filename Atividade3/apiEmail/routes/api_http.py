@@ -24,6 +24,9 @@ class MyHandler(http.server.SimpleHTTPRequestHandler):
             # /usuario/id
             data = usuariosController.recuperarUsuarioID(id)
             output_data = {'status': 'OK', 'result': data}
+        elif self.path == rotas[8]:
+            data = emailController.todosEmails(self.__class__.loginEmail)
+            output_data = {'status': 'OK', 'result': data}
         else:
             output_data = {'status': 'OK', 'result': "Faça login para pode acessar a rota"}
 
@@ -85,6 +88,7 @@ class MyHandler(http.server.SimpleHTTPRequestHandler):
     def do_DELETE(self):
         id = self.path.split('/')[-1]
 
+        """
         content_length = int(self.headers['Content-Length'])
         #print('content_length:', content_length)
         
@@ -93,9 +97,12 @@ class MyHandler(http.server.SimpleHTTPRequestHandler):
             input_data = json.loads(input_json)
         else:
             input_data = None
-            
+        """ 
         #print(input_data)
         
+        if self.path == rotas[9].format(id):
+            emailController.removerEmail(id)
+
         # - response -
         
         self.send_response(200)
@@ -121,13 +128,17 @@ class MyHandler(http.server.SimpleHTTPRequestHandler):
             
         #print(input_data)
         
+        if self.path == rotas[7].format(id):
+            mail = emailController.abrirEmail(id)
+            output_data = {'status': 'OK', 'result': mail}
+
         # - response -
         
         self.send_response(200)
         self.send_header('Content-type', 'text/json')
         self.end_headers()
         
-        output_data = {'status': 'OK', 'result': 'PUT'}
+        
         output_json = json.dumps(output_data)
         
         self.wfile.write(output_json.encode('utf-8'))

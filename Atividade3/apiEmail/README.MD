@@ -3,10 +3,10 @@ Implementação de um serviço de mensagens(3.0)
 Descrição:
 Utilizando WebServices no modelo REST, desenvolva um servidor de email simplificado. Ele deve implementar, pelo menos, as seguintes funcionalidades:
 
-- Enviar mensagem - 
-- Listar mensagens - 
-- Apagar mensagens -
-- Abrir mensagem -
+- Enviar mensagem - OK
+- Listar mensagens - OK
+- Apagar mensagens - OK
+- Abrir mensagem - OK
 - Encaminhar mensagem - 
 - Responder Mensagem -
 
