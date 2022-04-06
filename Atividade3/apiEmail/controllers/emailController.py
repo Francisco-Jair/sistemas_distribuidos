@@ -1,6 +1,7 @@
 from models.emailModels import enviar_emailBD
 
 
-def enviarEmail(destinatario, assunto, corpo):
-    enviar_emailBD(destinatario, assunto, corpo)
+def enviarEmail(data, remetente):
+    print(remetente)
+    enviar_emailBD(data["destinatario"], data["assunto"], data["corpo"], remetente)
     return 1

@@ -2,30 +2,19 @@ import http.server
 import json
 from .list_routers import lista_rotas as rotas
 from controllers import emailController, get, usuariosController
-#from urllib.parse import urlparse
-#import socketserver
-#PORT = 8000
+
+loginEmail = None
 
 
 class MyHandler(http.server.SimpleHTTPRequestHandler):
 
     def do_GET(self):
-        #query = urlparse(self.path).query
+
         id = self.path.split('/')[-1]
-
-        """
-        content_length = int(self.headers['Content-Length'])
-
-        
-        if content_length:
-            input_json = self.rfile.read(content_length)
-            input_data = json.loads(input_json)
-        else:
-            input_data = Nones
-        """
 
         if self.path == rotas[1]:
             # /teste
+            print(self.__class__.loginEmail)
             output_data = {'status': 'OK', 'result': get.testeGET()['version']}
         elif self.path == rotas[3]:
             # /usuario
@@ -48,9 +37,7 @@ class MyHandler(http.server.SimpleHTTPRequestHandler):
     
 
     def do_POST(self):
-        # - request -
         content_length = int(self.headers['Content-Length'])
-        #print('content_length:', content_length)
         
         if content_length:
             input_json = self.rfile.read(content_length)
@@ -71,13 +58,17 @@ class MyHandler(http.server.SimpleHTTPRequestHandler):
             output_data = {'status': 'OK', 'result': msg}
         elif self.path == rotas[5]:
             # /enviar_email
-            code = emailController.enviarEmail(input_data)
-            output_data = {'status': 'OK', 'result': "KO"}
+            code = emailController.enviarEmail(input_data, self.__class__.loginEmail)
+            output_data = {'status': 'OK', 'result': "E-mail Enviado"}
         elif self.path == rotas[6]:
             # /login
-            #self.login, self.email = get.login(input_data["login"])
-            output_data = {'status': 'OK', 'result': "Login realizado com sucesso"}
-            #print(self.login, self.email)
+            if get.login(input_data["login"]):
+                msg = "Login realizado com sucesso"
+                self.__class__.loginEmail = input_data["login"]
+            else:
+                msg = "Usuarios já logado"
+
+            output_data = {'status': 'OK', 'result': msg}
         else:
             output_data = {'status': 'OK', 'result': "Faça login para pode acessar a rota"}
         
@@ -87,12 +78,13 @@ class MyHandler(http.server.SimpleHTTPRequestHandler):
         self.send_header('Content-type', 'text/json')
         self.end_headers()
         
-        
         output_json = json.dumps(output_data)
         self.wfile.write(output_json.encode('utf-8'))
     
 
     def do_DELETE(self):
+        id = self.path.split('/')[-1]
+
         content_length = int(self.headers['Content-Length'])
         #print('content_length:', content_length)
         
@@ -117,6 +109,7 @@ class MyHandler(http.server.SimpleHTTPRequestHandler):
     
 
     def do_PUT(self):
+        id = self.path.split('/')[-1]
         content_length = int(self.headers['Content-Length'])
         #print('content_length:', content_length)
         
@@ -142,13 +135,3 @@ class MyHandler(http.server.SimpleHTTPRequestHandler):
 
 Handler = MyHandler
 
-
-"""
-try:
-    with socketserver.TCPServer(("", PORT), Handler) as httpd:
-        print(f"Starting http://0.0.0.0:{PORT}")
-        httpd.serve_forever()
-except KeyboardInterrupt:
-    print("Stopping by Ctrl+C")
-    httpd.server_close()  # to resolve problem `OSError: [Errno 98] Address already in use`
-"""

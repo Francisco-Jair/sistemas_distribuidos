@@ -6,7 +6,6 @@ db_path = os.path.join(BASE_DIR, "dados.db")
 
 
 def criarBanco():
-    #print(BASE_DIR)
     con = sqlite3.connect(db_path)
     #con.close()
 
@@ -22,11 +21,10 @@ def criarTabelasEmail():
     con = sqlite3.connect(db_path)    
     cur = con.cursor()
     cur.execute('''    
-    CREATE TABLE IF NOT EXISTS emails (id_email integer primary key autoincrement not null , destinatario text, assunto text, corpo text, lido integer,usuario integer not null)
+    CREATE TABLE IF NOT EXISTS emails (id_email integer primary key autoincrement not null , destinatario text, assunto text, corpo text, lido integer, usuario text not null)
     ''')
     con.close()
     
-
 
 if __name__ == '__main__':
     criarBanco()
