@@ -41,7 +41,8 @@ class MyHandler(http.server.SimpleHTTPRequestHandler):
 
     def do_POST(self):
         content_length = int(self.headers['Content-Length'])
-        
+        print(self.headers)
+
         if content_length:
             input_json = self.rfile.read(content_length)
             input_data = json.loads(input_json)
