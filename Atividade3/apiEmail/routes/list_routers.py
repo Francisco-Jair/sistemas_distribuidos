@@ -9,4 +9,6 @@ lista_rotas = [
     "/email/{}", #7
     "/email/caixa_entrada", #8
     "/email/delete/{}", #9
+    "/logout", #10
+    "/email/resposta", #11
 ]

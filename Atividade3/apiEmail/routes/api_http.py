@@ -8,10 +8,11 @@ loginEmail = None
 
 class MyHandler(http.server.SimpleHTTPRequestHandler):
 
+
     def do_OPTIONS(self):
         self.send_response(200, "ok")
         self.send_header('Access-Control-Allow-Origin', '*')
-        self.send_header('Access-Control-Allow-Methods', 'GET, OPTIONS, POST')
+        self.send_header('Access-Control-Allow-Methods', 'GET, OPTIONS, POST, PUT, DELETE')
         self.send_header("Access-Control-Allow-Headers", "X-Requested-With")
         self.send_header("Access-Control-Allow-Headers", "Content-Type")
         self.end_headers()
@@ -38,6 +39,10 @@ class MyHandler(http.server.SimpleHTTPRequestHandler):
         elif self.path == rotas[8]:
             data = emailController.todosEmails(self.__class__.loginEmail)
             output_data = {'status': 'OK', 'result': data}
+        elif self.path == rotas[10] and self.__class__.loginEmail != None:
+            get.logout(self.__class__.loginEmail)
+            self.__class__.loginEmail = None
+            output_data = {'status': 'OK', 'result': "Logout Efetuado"}
         else:
             output_data = {'status': 'OK', 'result': "Faça login para pode acessar a rota"}
 
@@ -49,7 +54,7 @@ class MyHandler(http.server.SimpleHTTPRequestHandler):
         self.send_response(200)
         self.send_header('Content-type', 'text/html')
         self.send_header('Access-Control-Allow-Origin', '*')
-        self.send_header('Access-Control-Allow-Methods', 'GET, OPTIONS, POST')
+        self.send_header('Access-Control-Allow-Methods', 'GET, OPTIONS, POST, PUT, DELETE')
         self.send_header("Access-Control-Allow-Headers", "X-Requested-With")
         self.send_header("Access-Control-Allow-Headers", "Content-Type")
         self.end_headers()
@@ -88,11 +93,14 @@ class MyHandler(http.server.SimpleHTTPRequestHandler):
             if get.login(input_data["login"]):
                 msg = "Login realizado com sucesso"
                 self.__class__.loginEmail = input_data["login"]
-                print(self.__class__.loginEmail)
             else:
                 msg = "Usuarios já logado"
 
             output_data = {'status': 'OK', 'result': msg}
+        elif self.path == rotas[11]:
+            # /email/resposta
+            emailController.respostaEmail(input_data["id"], input_data["resposta"], input_data["destinatario"], self.__class__.loginEmail)
+            output_data = {'status': 'OK', 'result': "Respondido"}
         else:
             output_data = {'status': 'OK', 'result': "Faça login para pode acessar a rota"}
         
@@ -101,7 +109,7 @@ class MyHandler(http.server.SimpleHTTPRequestHandler):
         self.send_response(200)
         self.send_header('Content-type', 'text/html')
         self.send_header('Access-Control-Allow-Origin', '*')
-        self.send_header('Access-Control-Allow-Methods', 'GET, OPTIONS, POST')
+        self.send_header('Access-Control-Allow-Methods', 'GET, OPTIONS, POST, PUT, DELETE')
         self.send_header("Access-Control-Allow-Headers", "X-Requested-With")
         self.send_header("Access-Control-Allow-Headers", "Content-Type")
         self.end_headers()
@@ -129,9 +137,12 @@ class MyHandler(http.server.SimpleHTTPRequestHandler):
             emailController.removerEmail(id)
 
         # - response -
-        
         self.send_response(200)
-        self.send_header('Content-type', 'text/json')
+        self.send_header('Content-type', 'text/html')
+        self.send_header('Access-Control-Allow-Origin', '*')
+        self.send_header('Access-Control-Allow-Methods', 'GET, OPTIONS, POST, PUT, DELETE')
+        self.send_header("Access-Control-Allow-Headers", "X-Requested-With")
+        self.send_header("Access-Control-Allow-Headers", "Content-Type")
         self.end_headers()
         
         output_data = {'status': 'OK', 'result': 'DELETE'}
@@ -162,8 +173,15 @@ class MyHandler(http.server.SimpleHTTPRequestHandler):
         #self.send_response(200)
         #self.send_header('Content-type', 'text/json')
         #self.end_headers()
+        self.send_response(200)
+        self.send_header('Content-type', 'text/html')
+        self.send_header('Access-Control-Allow-Origin', '*')
+        self.send_header('Access-Control-Allow-Methods', 'GET, OPTIONS, POST, PUT, DELETE')
+        self.send_header("Access-Control-Allow-Headers", "X-Requested-With")
+        self.send_header("Access-Control-Allow-Headers", "Content-Type")
+        self.end_headers()
         
-        
+
         output_json = json.dumps(output_data)
         
         self.wfile.write(output_json.encode('utf-8'))

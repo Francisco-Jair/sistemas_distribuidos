@@ -1,4 +1,4 @@
-from models.emailModels import enviar_emailBD, lerEmail, caixaDeEntrada, excluirEmail
+from models.emailModels import enviar_emailBD, lerEmail, caixaDeEntrada, excluirEmail, reponderEmail
 
 
 def enviarEmail(data, remetente):
@@ -20,3 +20,8 @@ def todosEmails(email):
 def removerEmail(id):
     data = excluirEmail(id)
     return data
+
+
+def respostaEmail(id, resposta, destinatario, remetente):
+    reponderEmail(id, resposta, destinatario, remetente)
+    return 1

@@ -49,5 +49,22 @@ def excluirEmail(id):
     return True
 
 
+def reponderEmail(id, resposta, destinatario, remetente):
+    con = sqlite3.connect(db_path)
+    cur = con.cursor()
+
+    # Atualizar
+    cur.execute(f"""UPDATE emails SET corpo = '{resposta}' WHERE id_email = {id};""")
+    con.commit()
+    cur.execute(f"""UPDATE emails SET lido = 0 WHERE id_email = {id};""")
+    con.commit()
+    cur.execute(f"""UPDATE emails SET destinatario = '{destinatario}' WHERE id_email = {id};""")
+    con.commit()
+    cur.execute(f"""UPDATE emails SET usuario = '{remetente}' WHERE id_email = {id};""")
+    con.commit()
+
+    return 1
+
+
 if __name__ == '__main__':
     pass
