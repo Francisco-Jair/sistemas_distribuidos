@@ -19,47 +19,48 @@
     <!--  -->
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" href="./caixa_entrada.html">Caixa de entrada</a>
+      <a id="pagInicial" class="navbar-brand" href="./caixa_entrada.html">Caixa de entrada</a>
       <a class="navbar-brand" href="./enviar.html">Enviar E-mail</a>
       <a class="navbar-brand" href="#" onclick="logout()">Logout</a>
       <a id="logoutId" class="navbar-brand" href="../index.html"></a>
-      <!-- <a class="navbar-brand" href="./caixa_entrada.html">Caixa de Saída</a> -->
-
-      <!-- <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="#"
-              >Home <span class="sr-only">(current)</span></a
-            >
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Link</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link disabled">Disabled</a>
-          </li>
-        </ul>
-        </form>
-      </div> -->
+  
     </nav>
 
     <div class="container">
-      <div class="list-group" style="margin-top: 32px">
-        <a href="#" class="list-group-item list-group-item-action active">
-          <div class="d-flex w-100 justify-content-between">
-            <h5 class="mb-1">E-mails Recebidos</h5>
-          </div>
-          <!-- <p class="mb-1">Some placeholder content in a paragraph.</p> -->
-          <!-- <small>And some small print.</small> -->
-        </a>
+      <form style="margin-top: 30px;">
 
-        <!-- TODOS EMAILS VAO FICAR AQUI -->
-        <a id="abrirEmailid"  href="./abrir_email.html"></a>
-        <div id="listagrupo">
-       
-
+        <div class="form-group">
+          <label for="exampleFormControlInput1">Destinatário</label>
+          <input
+            type="email"
+            class="form-control"
+            id="exampleFormControlInput1"
+            placeholder="name@example.com"
+          />
         </div>
-      </div>
+
+        <div class="form-group">
+            <label for="exampleFormControlInput2">Assunto</label>
+            <input
+              type="text"
+              class="form-control"
+              id="exampleFormControlInput2"
+              placeholder="Assunto"
+            />
+        </div>
+
+        <div class="form-group">
+          <label for="exampleFormControlTextarea1">Corpo</label>
+          <textarea
+            class="form-control"
+            id="exampleFormControlTextarea1"
+            rows="6"
+          ></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary" onclick="sendEmail()">Enviar</button>
+        <!-- <a id="loginSite" href="./file/caixa_entrada.html"></a> -->
+      </form>
     </div>
 
     <!--  -->
@@ -76,7 +77,7 @@
     <script type="text/javascript" src="../index.js"></script>
     <script type="text/javascript">
       $(document).ready(function () {
-        caixaDeEntrada();
+        // caixaDeEntrada();
       });
     </script>
   </body>
