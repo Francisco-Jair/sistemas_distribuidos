@@ -8,13 +8,24 @@ loginEmail = None
 
 class MyHandler(http.server.SimpleHTTPRequestHandler):
 
+    def do_OPTIONS(self):
+        self.send_response(200, "ok")
+        self.send_header('Access-Control-Allow-Origin', '*')
+        self.send_header('Access-Control-Allow-Methods', 'GET, OPTIONS, POST')
+        self.send_header("Access-Control-Allow-Headers", "X-Requested-With")
+        self.send_header("Access-Control-Allow-Headers", "Content-Type")
+        self.end_headers()
+
+
     def do_GET(self):
+        #self.processRequest()
+        #print(self.headers)
 
         id = self.path.split('/')[-1]
 
         if self.path == rotas[1]:
             # /teste
-            print(self.__class__.loginEmail)
+            # print(self.__class__.loginEmail)
             output_data = {'status': 'OK', 'result': get.testeGET()['version']}
         elif self.path == rotas[3]:
             # /usuario
@@ -31,8 +42,16 @@ class MyHandler(http.server.SimpleHTTPRequestHandler):
             output_data = {'status': 'OK', 'result': "Faça login para pode acessar a rota"}
 
 
+        #self.send_response(200)
+        #self.send_header('Accept', '*/*')
+        #self.send_header('Content-Type', 'application/json')
+        #self.end_headers()
         self.send_response(200)
-        self.send_header('Content-type', 'text/json')
+        self.send_header('Content-type', 'text/html')
+        self.send_header('Access-Control-Allow-Origin', '*')
+        self.send_header('Access-Control-Allow-Methods', 'GET, OPTIONS, POST')
+        self.send_header("Access-Control-Allow-Headers", "X-Requested-With")
+        self.send_header("Access-Control-Allow-Headers", "Content-Type")
         self.end_headers()
         output_json = json.dumps(output_data)
         
@@ -41,7 +60,7 @@ class MyHandler(http.server.SimpleHTTPRequestHandler):
 
     def do_POST(self):
         content_length = int(self.headers['Content-Length'])
-        print(self.headers)
+
 
         if content_length:
             input_json = self.rfile.read(content_length)
@@ -69,6 +88,7 @@ class MyHandler(http.server.SimpleHTTPRequestHandler):
             if get.login(input_data["login"]):
                 msg = "Login realizado com sucesso"
                 self.__class__.loginEmail = input_data["login"]
+                print(self.__class__.loginEmail)
             else:
                 msg = "Usuarios já logado"
 
@@ -79,7 +99,11 @@ class MyHandler(http.server.SimpleHTTPRequestHandler):
         
         # - response -
         self.send_response(200)
-        self.send_header('Content-type', 'text/json')
+        self.send_header('Content-type', 'text/html')
+        self.send_header('Access-Control-Allow-Origin', '*')
+        self.send_header('Access-Control-Allow-Methods', 'GET, OPTIONS, POST')
+        self.send_header("Access-Control-Allow-Headers", "X-Requested-With")
+        self.send_header("Access-Control-Allow-Headers", "Content-Type")
         self.end_headers()
         
         output_json = json.dumps(output_data)
@@ -135,14 +159,15 @@ class MyHandler(http.server.SimpleHTTPRequestHandler):
 
         # - response -
         
-        self.send_response(200)
-        self.send_header('Content-type', 'text/json')
-        self.end_headers()
+        #self.send_response(200)
+        #self.send_header('Content-type', 'text/json')
+        #self.end_headers()
         
         
         output_json = json.dumps(output_data)
         
         self.wfile.write(output_json.encode('utf-8'))
+    
 
 
 Handler = MyHandler
